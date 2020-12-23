@@ -17,13 +17,13 @@ namespace cpp2008 {
 
 class Rule_9_5_1 : public ClangTidyMisraCheck {
 public:
-    Rule_9_5_1(StringRef Name, ClangTidyContext *Context);
-    virtual void registerMatchers(ast_matchers::MatchFinder *Finder) override;
-    virtual void
-    checkImpl(const ast_matchers::MatchFinder::MatchResult &Result) override;
+  Rule_9_5_1(StringRef Name, ClangTidyContext *Context);
+  virtual void registerMatchers(ast_matchers::MatchFinder *Finder) override;
+  virtual void
+  checkImpl(const ast_matchers::MatchFinder::MatchResult &Result) override;
 };
 
-} // cpp2008
+} // namespace cpp2008
 } // namespace misra
 } // namespace tidy
 } // namespace clang

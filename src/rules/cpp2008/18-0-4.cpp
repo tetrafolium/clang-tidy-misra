@@ -6,9 +6,9 @@
 //===----------------------------------------------------------------------===//
 
 #include "18-0-4.h"
+#include "rules/common/BannedInclude.h"
 #include "clang/Frontend/CompilerInstance.h"
 #include "clang/Lex/Preprocessor.h"
-#include "rules/common/BannedInclude.h"
 
 namespace clang {
 namespace tidy {
@@ -19,18 +19,18 @@ Rule_18_0_4::Rule_18_0_4(llvm::StringRef Name, ClangTidyContext *Context)
     : ClangTidyMisraCheck(Name, Context) {}
 
 void Rule_18_0_4::registerMatchers(ast_matchers::MatchFinder *Finder) {
-    using namespace clang::ast_matchers;
-    Finder->addMatcher(callExpr(callee(functionDecl(matchesName(
-                                           "^(std)?::(clock|difftime|mktime|time)$"))))
-                       .bind("CallExpr"),
-                       this);
+  using namespace clang::ast_matchers;
+  Finder->addMatcher(callExpr(callee(functionDecl(matchesName(
+                                  "^(std)?::(clock|difftime|mktime|time)$"))))
+                         .bind("CallExpr"),
+                     this);
 }
 
 void Rule_18_0_4::checkImpl(
     const ast_matchers::MatchFinder::MatchResult &Result) {
-    if (const auto *callExpr = Result.Nodes.getNodeAs<CallExpr>("CallExpr")) {
-        diag(callExpr->getLocStart());
-    }
+  if (const auto *callExpr = Result.Nodes.getNodeAs<CallExpr>("CallExpr")) {
+    diag(callExpr->getLocStart());
+  }
 }
 
 } // namespace cpp2008

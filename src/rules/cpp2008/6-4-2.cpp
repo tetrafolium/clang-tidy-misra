@@ -7,8 +7,8 @@
 
 #include "6-4-2.h"
 #include "clang/AST/ASTContext.h"
-#include "clang/ASTMatchers/ASTMatchers.h"
 #include "clang/ASTMatchers/ASTMatchFinder.h"
+#include "clang/ASTMatchers/ASTMatchers.h"
 #include "clang/Frontend/CompilerInstance.h"
 #include "clang/Lex/Preprocessor.h"
 
@@ -23,15 +23,15 @@ Rule_6_4_2::Rule_6_4_2(llvm::StringRef Name, ClangTidyContext *Context)
     : ClangTidyMisraCheck(Name, Context) {}
 
 void Rule_6_4_2::registerMatchers(ast_matchers::MatchFinder *Finder) {
-    Finder->addMatcher(
-        ifStmt(hasElse(ifStmt(unless(hasElse(stmt()))).bind("if"))), this);
+  Finder->addMatcher(
+      ifStmt(hasElse(ifStmt(unless(hasElse(stmt()))).bind("if"))), this);
 }
 
 void Rule_6_4_2::checkImpl(
     const ast_matchers::MatchFinder::MatchResult &Result) {
-    if (const auto *ifStmt = Result.Nodes.getNodeAs<IfStmt>("if")) {
-        diag(ifStmt->getLocStart());
-    }
+  if (const auto *ifStmt = Result.Nodes.getNodeAs<IfStmt>("if")) {
+    diag(ifStmt->getLocStart());
+  }
 }
 
 } // namespace cpp2008

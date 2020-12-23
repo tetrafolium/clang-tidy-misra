@@ -6,9 +6,9 @@
 //===----------------------------------------------------------------------===//
 
 #include "27-0-1.h"
+#include "rules/common/BannedInclude.h"
 #include "clang/Frontend/CompilerInstance.h"
 #include "clang/Lex/Preprocessor.h"
-#include "rules/common/BannedInclude.h"
 
 namespace clang {
 namespace tidy {
@@ -19,9 +19,9 @@ Rule_27_0_1::Rule_27_0_1(llvm::StringRef Name, ClangTidyContext *Context)
     : ClangTidyMisraCheck(Name, Context) {}
 
 void Rule_27_0_1::registerPPCallbacksImpl() {
-    using BannedIncludePPCallback = common::BannedInclude<Rule_27_0_1>;
-    getPreprocessor().addPPCallbacks(::llvm::make_unique<BannedIncludePPCallback>(
-                                         *this, BannedIncludePPCallback::StringSet{"cstdio"}));
+  using BannedIncludePPCallback = common::BannedInclude<Rule_27_0_1>;
+  getPreprocessor().addPPCallbacks(::llvm::make_unique<BannedIncludePPCallback>(
+      *this, BannedIncludePPCallback::StringSet{"cstdio"}));
 }
 
 } // namespace cpp2008

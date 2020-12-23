@@ -17,13 +17,13 @@ namespace c2012 {
 
 class Rule_17_1 : public ClangTidyMisraCheck {
 public:
-    Rule_17_1(StringRef Name, ClangTidyContext *Context);
-    void registerPPCallbacksImpl() override;
-    void registerMatchers(ast_matchers::MatchFinder *Finder) override;
-    void checkImpl(const ast_matchers::MatchFinder::MatchResult &Result) override;
+  Rule_17_1(StringRef Name, ClangTidyContext *Context);
+  void registerPPCallbacksImpl() override;
+  void registerMatchers(ast_matchers::MatchFinder *Finder) override;
+  void checkImpl(const ast_matchers::MatchFinder::MatchResult &Result) override;
 };
 
-} // c2012
+} // namespace c2012
 } // namespace misra
 } // namespace tidy
 } // namespace clang

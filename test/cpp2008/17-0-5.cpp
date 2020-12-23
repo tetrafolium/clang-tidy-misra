@@ -5,9 +5,12 @@
 jmp_buf buf;
 
 void setup() {
-    setjmp(buf); // CHECK-MESSAGES: :[[@LINE]]:3: warning: The setjmp macro and the longjmp function shall not be used. [misra-cpp2008-17-0-5]
+  setjmp(buf); // CHECK-MESSAGES: :[[@LINE]]:3: warning: The setjmp macro and
+               // the longjmp function shall not be used. [misra-cpp2008-17-0-5]
 }
 
 void jump() {
-    longjmp(buf, 1); // CHECK-MESSAGES: :[[@LINE]]:3: warning: The setjmp macro and the longjmp function shall not be used. [misra-cpp2008-17-0-5]
+  longjmp(buf,
+          1); // CHECK-MESSAGES: :[[@LINE]]:3: warning: The setjmp macro and the
+              // longjmp function shall not be used. [misra-cpp2008-17-0-5]
 }
