@@ -19,22 +19,23 @@ namespace common {
 
 template <typename Checker> class BannedMacro : public PPCallbacks {
 public:
-  using StringSet = std::unordered_set<std::string>;
-  BannedMacro(Checker &RuleChecker, StringSet &&BannedMacros)
-      : PPCallbacks(), RuleChecker(RuleChecker), BannedMacroSet(BannedMacros) {}
+using StringSet = std::unordered_set<std::string>;
+BannedMacro(Checker &RuleChecker, StringSet &&BannedMacros)
+	: PPCallbacks(), RuleChecker(RuleChecker), BannedMacroSet(BannedMacros) {
+}
 
-  virtual void MacroExpands(const Token &MacroNameTok,
-                            const MacroDefinition &MD, SourceRange Range,
-                            const MacroArgs *Args) override {
-    const std::string &macroName = MacroNameTok.getIdentifierInfo()->getName();
-    if (BannedMacroSet.count(macroName)) {
-      RuleChecker.diag(Range.getBegin());
-    }
-  }
+virtual void MacroExpands(const Token &MacroNameTok,
+                          const MacroDefinition &MD, SourceRange Range,
+                          const MacroArgs *Args) override {
+	const std::string &macroName = MacroNameTok.getIdentifierInfo()->getName();
+	if (BannedMacroSet.count(macroName)) {
+		RuleChecker.diag(Range.getBegin());
+	}
+}
 
 private:
-  Checker &RuleChecker;
-  const StringSet BannedMacroSet;
+Checker &RuleChecker;
+const StringSet BannedMacroSet;
 };
 
 } // namespace common

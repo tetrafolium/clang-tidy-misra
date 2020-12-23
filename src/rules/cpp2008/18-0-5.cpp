@@ -25,25 +25,26 @@ namespace cpp2008 {
 using namespace clang::ast_matchers;
 
 Rule_18_0_5::Rule_18_0_5(llvm::StringRef Name, ClangTidyContext *Context)
-    : ClangTidyMisraCheck(Name, Context) {}
+	: ClangTidyMisraCheck(Name, Context) {
+}
 
 void Rule_18_0_5::registerMatchers(ast_matchers::MatchFinder *Finder) {
-  auto matcher =
-      callExpr(callee(functionDecl(anyOf(
-                   hasName("strcpy"), hasName("strcmp"), hasName("strcat"),
-                   hasName("strchr"), hasName("strspn"), hasName("strcspn"),
-                   hasName("strpbrk"), hasName("strrchr"), hasName("strstr"),
-                   hasName("strtok"), hasName("strlen")))))
-          .bind("CallExpr");
-  Finder->addMatcher(matcher, this);
+	auto matcher =
+		callExpr(callee(functionDecl(anyOf(
+						     hasName("strcpy"), hasName("strcmp"), hasName("strcat"),
+						     hasName("strchr"), hasName("strspn"), hasName("strcspn"),
+						     hasName("strpbrk"), hasName("strrchr"), hasName("strstr"),
+						     hasName("strtok"), hasName("strlen")))))
+		.bind("CallExpr");
+	Finder->addMatcher(matcher, this);
 }
 
 void Rule_18_0_5::checkImpl(
-    const ast_matchers::MatchFinder::MatchResult &Result) {
+	const ast_matchers::MatchFinder::MatchResult &Result) {
 
-  if (const auto *calExpr = Result.Nodes.getNodeAs<CallExpr>("CallExpr")) {
-    diag(calExpr->getLocStart());
-  }
+	if (const auto *calExpr = Result.Nodes.getNodeAs<CallExpr>("CallExpr")) {
+		diag(calExpr->getLocStart());
+	}
 }
 
 } // namespace cpp2008

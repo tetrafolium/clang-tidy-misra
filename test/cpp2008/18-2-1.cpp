@@ -3,7 +3,7 @@
 #include <cstddef>
 
 struct A {
-  int one;
+	int one;
 };
 
 int i = offsetof(A, one); // CHECK-MESSAGES: :[[@LINE]]:9: warning: The macro

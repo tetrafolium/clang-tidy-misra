@@ -17,10 +17,10 @@ namespace cpp2008 {
 
 class Rule_16_3_2 : public ClangTidyMisraCheck {
 public:
-  Rule_16_3_2(StringRef Name, ClangTidyContext *Context);
+Rule_16_3_2(StringRef Name, ClangTidyContext *Context);
 
 protected:
-  virtual void registerPPCallbacksImpl() override;
+virtual void registerPPCallbacksImpl() override;
 };
 
 } // namespace cpp2008

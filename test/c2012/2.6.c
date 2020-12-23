@@ -6,7 +6,7 @@
 int use_int16(int16_t x);
 
 void function(void) {
-  int16_t x = 6;
+	int16_t x = 6;
 unused_label: // expected-warning {{unused label 'unused_label'}}
-  use_int16(x);
+	use_int16(x);
 }

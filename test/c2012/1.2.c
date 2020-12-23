@@ -2,4 +2,4 @@
 // -verify %s
 
 int i =
-    0b101010; // expected-error {{binary integer literals are a GNU extension}}
+	0b101010; // expected-error {{binary integer literals are a GNU extension}}

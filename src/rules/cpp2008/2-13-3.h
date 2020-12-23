@@ -17,17 +17,17 @@ namespace cpp2008 {
 
 class Rule_2_13_3 : public ClangTidyMisraCheck {
 public:
-  Rule_2_13_3(StringRef Name, ClangTidyContext *Context);
-  virtual void registerMatchers(ast_matchers::MatchFinder *Finder) override;
-  virtual void
-  checkImpl(const ast_matchers::MatchFinder::MatchResult &Result) override;
+Rule_2_13_3(StringRef Name, ClangTidyContext *Context);
+virtual void registerMatchers(ast_matchers::MatchFinder *Finder) override;
+virtual void
+checkImpl(const ast_matchers::MatchFinder::MatchResult &Result) override;
 
 private:
-  bool isUnsignedIntegerLiteral(const IntegerLiteral *il);
+bool isUnsignedIntegerLiteral(const IntegerLiteral *il);
 
-  /// \brief Make sure the suffix 'U' exists.
-  /// \param il Unsigned integer literal.
-  void dealWithUnsignedInteger(const IntegerLiteral *intLiteral);
+/// \brief Make sure the suffix 'U' exists.
+/// \param il Unsigned integer literal.
+void dealWithUnsignedInteger(const IntegerLiteral *intLiteral);
 };
 
 } // namespace cpp2008

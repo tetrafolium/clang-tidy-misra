@@ -16,12 +16,13 @@ namespace misra {
 namespace cpp2008 {
 
 Rule_27_0_1::Rule_27_0_1(llvm::StringRef Name, ClangTidyContext *Context)
-    : ClangTidyMisraCheck(Name, Context) {}
+	: ClangTidyMisraCheck(Name, Context) {
+}
 
 void Rule_27_0_1::registerPPCallbacksImpl() {
-  using BannedIncludePPCallback = common::BannedInclude<Rule_27_0_1>;
-  getPreprocessor().addPPCallbacks(::llvm::make_unique<BannedIncludePPCallback>(
-      *this, BannedIncludePPCallback::StringSet{"cstdio"}));
+	using BannedIncludePPCallback = common::BannedInclude<Rule_27_0_1>;
+	getPreprocessor().addPPCallbacks(::llvm::make_unique<BannedIncludePPCallback>(
+						 *this, BannedIncludePPCallback::StringSet{"cstdio"}));
 }
 
 } // namespace cpp2008

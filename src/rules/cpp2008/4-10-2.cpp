@@ -17,23 +17,24 @@ namespace cpp2008 {
 using namespace clang::ast_matchers;
 
 Rule_4_10_2::Rule_4_10_2(llvm::StringRef Name, ClangTidyContext *Context)
-    : ClangTidyMisraCheck(Name, Context) {}
+	: ClangTidyMisraCheck(Name, Context) {
+}
 
 void Rule_4_10_2::registerMatchers(ast_matchers::MatchFinder *Finder) {
-  Finder->addMatcher(
-      integerLiteral(equals(0),
-                     hasParent(expr(anyOf(hasType(pointerType()),
-                                          hasType(memberPointerType())))))
-          .bind("ZeroAsNullptr"),
-      this);
+	Finder->addMatcher(
+		integerLiteral(equals(0),
+		               hasParent(expr(anyOf(hasType(pointerType()),
+		                                    hasType(memberPointerType())))))
+		.bind("ZeroAsNullptr"),
+		this);
 }
 
 void Rule_4_10_2::checkImpl(
-    const ast_matchers::MatchFinder::MatchResult &Result) {
-  if (const auto *integerLiteralStmt =
-          Result.Nodes.getNodeAs<Stmt>("ZeroAsNullptr")) {
-    diag(integerLiteralStmt->getLocStart());
-  }
+	const ast_matchers::MatchFinder::MatchResult &Result) {
+	if (const auto *integerLiteralStmt =
+		    Result.Nodes.getNodeAs<Stmt>("ZeroAsNullptr")) {
+		diag(integerLiteralStmt->getLocStart());
+	}
 }
 
 } // namespace cpp2008

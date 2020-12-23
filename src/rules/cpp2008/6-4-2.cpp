@@ -20,18 +20,19 @@ namespace misra {
 namespace cpp2008 {
 
 Rule_6_4_2::Rule_6_4_2(llvm::StringRef Name, ClangTidyContext *Context)
-    : ClangTidyMisraCheck(Name, Context) {}
+	: ClangTidyMisraCheck(Name, Context) {
+}
 
 void Rule_6_4_2::registerMatchers(ast_matchers::MatchFinder *Finder) {
-  Finder->addMatcher(
-      ifStmt(hasElse(ifStmt(unless(hasElse(stmt()))).bind("if"))), this);
+	Finder->addMatcher(
+		ifStmt(hasElse(ifStmt(unless(hasElse(stmt()))).bind("if"))), this);
 }
 
 void Rule_6_4_2::checkImpl(
-    const ast_matchers::MatchFinder::MatchResult &Result) {
-  if (const auto *ifStmt = Result.Nodes.getNodeAs<IfStmt>("if")) {
-    diag(ifStmt->getLocStart());
-  }
+	const ast_matchers::MatchFinder::MatchResult &Result) {
+	if (const auto *ifStmt = Result.Nodes.getNodeAs<IfStmt>("if")) {
+		diag(ifStmt->getLocStart());
+	}
 }
 
 } // namespace cpp2008

@@ -16,12 +16,13 @@ namespace misra {
 namespace cpp2008 {
 
 Rule_18_2_1::Rule_18_2_1(llvm::StringRef Name, ClangTidyContext *Context)
-    : ClangTidyMisraCheck(Name, Context) {}
+	: ClangTidyMisraCheck(Name, Context) {
+}
 
 void Rule_18_2_1::registerPPCallbacksImpl() {
-  using BannedMacroPPCallback = common::BannedMacro<Rule_18_2_1>;
-  getPreprocessor().addPPCallbacks(::llvm::make_unique<BannedMacroPPCallback>(
-      *this, BannedMacroPPCallback::StringSet{"offsetof"}));
+	using BannedMacroPPCallback = common::BannedMacro<Rule_18_2_1>;
+	getPreprocessor().addPPCallbacks(::llvm::make_unique<BannedMacroPPCallback>(
+						 *this, BannedMacroPPCallback::StringSet{"offsetof"}));
 }
 
 } // namespace cpp2008

@@ -2,6 +2,6 @@
 // -Xclang -verify %s
 
 unsigned int function(void) {
-  typedef unsigned int UINT; // expected-warning {{unused typedef 'UINT'}}
-  return 1;
+	typedef unsigned int UINT; // expected-warning {{unused typedef 'UINT'}}
+	return 1;
 }

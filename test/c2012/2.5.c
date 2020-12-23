@@ -4,4 +4,6 @@
 #define ONE 1
 #define TWO 2 // expected-warning {{macro is not used}}
 
-unsigned int function(void) { return ONE; }
+unsigned int function(void) {
+	return ONE;
+}
