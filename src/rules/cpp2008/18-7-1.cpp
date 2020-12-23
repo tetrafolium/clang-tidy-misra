@@ -25,37 +25,37 @@ Rule_18_7_1::Rule_18_7_1(llvm::StringRef Name, ClangTidyContext *Context)
     : ClangTidyMisraCheck(Name, Context) {}
 
 void Rule_18_7_1::registerPPCallbacksImpl() {
-  using BannedIncludePPCallback = common::BannedInclude<Rule_18_7_1>;
-  getPreprocessor().addPPCallbacks(::llvm::make_unique<BannedIncludePPCallback>(
-      *this, BannedIncludePPCallback::StringSet{"csignal"}));
+    using BannedIncludePPCallback = common::BannedInclude<Rule_18_7_1>;
+    getPreprocessor().addPPCallbacks(::llvm::make_unique<BannedIncludePPCallback>(
+                                         *this, BannedIncludePPCallback::StringSet{"csignal"}));
 
-  using BannedMacroPPCallback = common::BannedMacro<Rule_18_7_1>;
-  getPreprocessor().addPPCallbacks(::llvm::make_unique<BannedMacroPPCallback>(
-      *this, BannedMacroPPCallback::StringSet{
-                 "SIGABRT", "SIGFPE", "SIGILL", "SIGINT", "SIGSEGV", "SIGTERM",
-                 "SIG_DFL", "SIG_IGN", "SIG_ERR"}));
+    using BannedMacroPPCallback = common::BannedMacro<Rule_18_7_1>;
+    getPreprocessor().addPPCallbacks(::llvm::make_unique<BannedMacroPPCallback>(
+    *this, BannedMacroPPCallback::StringSet{
+        "SIGABRT", "SIGFPE", "SIGILL", "SIGINT", "SIGSEGV", "SIGTERM",
+        "SIG_DFL", "SIG_IGN", "SIG_ERR"}));
 }
 
 void Rule_18_7_1::registerMatchers(ast_matchers::MatchFinder *Finder) {
-  Finder->addMatcher(callExpr(callee(functionDecl(anyOf(hasName("::signal"),
-                                                        hasName("::raise")))))
-                         .bind("CallExpr"),
-                     this);
+    Finder->addMatcher(callExpr(callee(functionDecl(anyOf(hasName("::signal"),
+                                       hasName("::raise")))))
+                       .bind("CallExpr"),
+                       this);
 
-  Finder->addMatcher(
-      varDecl(hasType(namedDecl(hasName("::sig_atomic_t")))).bind("VarDecl"),
-      this);
+    Finder->addMatcher(
+        varDecl(hasType(namedDecl(hasName("::sig_atomic_t")))).bind("VarDecl"),
+        this);
 }
 
 void Rule_18_7_1::checkImpl(
     const ast_matchers::MatchFinder::MatchResult &Result) {
-  if (const auto *call = Result.Nodes.getNodeAs<CallExpr>("CallExpr")) {
-    diag(call->getLocStart());
-  }
+    if (const auto *call = Result.Nodes.getNodeAs<CallExpr>("CallExpr")) {
+        diag(call->getLocStart());
+    }
 
-  if (const auto *varDecl = Result.Nodes.getNodeAs<VarDecl>("VarDecl")) {
-    diag(varDecl->getTypeSpecStartLoc());
-  }
+    if (const auto *varDecl = Result.Nodes.getNodeAs<VarDecl>("VarDecl")) {
+        diag(varDecl->getTypeSpecStartLoc());
+    }
 }
 
 } // namespace cpp2008

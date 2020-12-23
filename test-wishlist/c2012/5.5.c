@@ -1,6 +1,6 @@
 #define MakeSquare(x) ((x) * (x))
 struct MakeSquare { // Non-Compliant
-  int a;
+    int a;
 };
 
 #define addOne(x) ((x) + 1)

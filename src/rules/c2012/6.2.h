@@ -17,9 +17,9 @@ namespace c2012 {
 
 class Rule_6_2 : public ClangTidyMisraCheck {
 public:
-  Rule_6_2(StringRef Name, ClangTidyContext *Context);
-  void registerMatchers(ast_matchers::MatchFinder *Finder) override;
-  void checkImpl(const ast_matchers::MatchFinder::MatchResult &Result) override;
+    Rule_6_2(StringRef Name, ClangTidyContext *Context);
+    void registerMatchers(ast_matchers::MatchFinder *Finder) override;
+    void checkImpl(const ast_matchers::MatchFinder::MatchResult &Result) override;
 };
 
 } // c2012

@@ -23,43 +23,43 @@ namespace cpp2008 {
 namespace {
 class CheckerImpl : public clang::PPCallbacks {
 public:
-  CheckerImpl(Rule_17_0_1 &RuleChecker) : RuleChecker(RuleChecker) {}
+    CheckerImpl(Rule_17_0_1 &RuleChecker) : RuleChecker(RuleChecker) {}
 
 private:
-  static const std::set<std::string> explicitlyIllegalMacroNames;
-  static const std::set<std::string> explicitlyLegalMacroNames;
+    static const std::set<std::string> explicitlyIllegalMacroNames;
+    static const std::set<std::string> explicitlyLegalMacroNames;
 
-  void detectViolation(const Token &MacroNameTok) {
-    const std::string &name = MacroNameTok.getIdentifierInfo()->getName();
-    const SourceLocation &loc = MacroNameTok.getLocation();
+    void detectViolation(const Token &MacroNameTok) {
+        const std::string &name = MacroNameTok.getIdentifierInfo()->getName();
+        const SourceLocation &loc = MacroNameTok.getLocation();
 
-    // A few specific macros with two leading underscores are valid
-    if (explicitlyLegalMacroNames.count(name)) {
-      return;
+        // A few specific macros with two leading underscores are valid
+        if (explicitlyLegalMacroNames.count(name)) {
+            return;
+        }
+        // All other, whether exlicitly banned or starting with a leading underscore
+        // constitute a violation of this rule.
+        if (explicitlyIllegalMacroNames.count(name) || (name.find('_') == 0)) {
+            RuleChecker.diag(loc);
+        }
     }
-    // All other, whether exlicitly banned or starting with a leading underscore
-    // constitute a violation of this rule.
-    if (explicitlyIllegalMacroNames.count(name) || (name.find('_') == 0)) {
-      RuleChecker.diag(loc);
-    }
-  }
 
 public:
-  // Detect #defines
-  virtual void MacroDefined(const Token &MacroNameTok,
-                            const MacroDirective *) override {
-    detectViolation(MacroNameTok);
-  }
+    // Detect #defines
+    virtual void MacroDefined(const Token &MacroNameTok,
+                              const MacroDirective *) override {
+        detectViolation(MacroNameTok);
+    }
 
-  // Detect #undef
-  virtual void MacroUndefined(const Token &MacroNameTok,
-                              const MacroDefinition & /*MD*/,
-                              const MacroDirective * /*Undef*/) override {
-    detectViolation(MacroNameTok);
-  }
+    // Detect #undef
+    virtual void MacroUndefined(const Token &MacroNameTok,
+                                const MacroDefinition & /*MD*/,
+                                const MacroDirective * /*Undef*/) override {
+        detectViolation(MacroNameTok);
+    }
 
 private:
-  Rule_17_0_1 &RuleChecker;
+    Rule_17_0_1 &RuleChecker;
 };
 }
 
@@ -78,16 +78,18 @@ const std::set<std::string> CheckerImpl::explicitlyIllegalMacroNames = {
     "__STDCPP_THREADS__",
     "define",
     "errno",
-    "assert"};
+    "assert"
+};
 
 const std::set<std::string> CheckerImpl::explicitlyLegalMacroNames = {
-    "__STDC_FORMAT_MACROS", "__STDC_LIMIT_MACROS"};
+    "__STDC_FORMAT_MACROS", "__STDC_LIMIT_MACROS"
+};
 
 Rule_17_0_1::Rule_17_0_1(llvm::StringRef Name, ClangTidyContext *Context)
     : ClangTidyMisraCheck(Name, Context) {}
 
 void Rule_17_0_1::registerPPCallbacksImpl() {
-  getPreprocessor().addPPCallbacks(::llvm::make_unique<CheckerImpl>(*this));
+    getPreprocessor().addPPCallbacks(::llvm::make_unique<CheckerImpl>(*this));
 }
 
 } // namespace cpp2008

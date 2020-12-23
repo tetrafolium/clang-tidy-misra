@@ -11,9 +11,10 @@ char trigraphCloseBrace[] = "??> -> }";   // expected-warning {{trigraph convert
 char trigraphTile[] = "??- -> ~";         // expected-warning {{trigraph converted to '~' character}}
 
 // clang-format off
-%:define MISRA_C_LIKES_DIGRAPHS
+%:
+define MISRA_C_LIKES_DIGRAPHS
 int a<::> = {1, 2, 3};
 
 int function()<%
-  return 1;
+return 1;
 %>

@@ -20,19 +20,19 @@ Rule_18_0_2::Rule_18_0_2(llvm::StringRef Name, ClangTidyContext *Context)
     : ClangTidyMisraCheck(Name, Context) {}
 
 void Rule_18_0_2::registerMatchers(ast_matchers::MatchFinder *Finder) {
-  using namespace clang::ast_matchers;
-  Finder->addMatcher(
-      callExpr(callee(functionDecl(matchesName("^(std)?::(atof|atoi|atol)$"))))
-          .bind("CallExpr"),
-      this);
+    using namespace clang::ast_matchers;
+    Finder->addMatcher(
+        callExpr(callee(functionDecl(matchesName("^(std)?::(atof|atoi|atol)$"))))
+        .bind("CallExpr"),
+        this);
 }
 
 void Rule_18_0_2::checkImpl(
     const ast_matchers::MatchFinder::MatchResult &Result) {
-  if (const auto *callExpr = Result.Nodes.getNodeAs<CallExpr>("CallExpr")) {
-    diag(callExpr->getLocStart());
-    callExpr->getCallee()->dumpColor();
-  }
+    if (const auto *callExpr = Result.Nodes.getNodeAs<CallExpr>("CallExpr")) {
+        diag(callExpr->getLocStart());
+        callExpr->getCallee()->dumpColor();
+    }
 }
 
 } // namespace cpp2008

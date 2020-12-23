@@ -25,22 +25,22 @@ namespace cpp2008 {
 namespace {
 class CheckerImpl : public clang::PPCallbacks {
 public:
-  CheckerImpl(Rule_17_0_5 &RuleChecker) : RuleChecker(RuleChecker) {}
+    CheckerImpl(Rule_17_0_5 &RuleChecker) : RuleChecker(RuleChecker) {}
 
 private:
-  static const std::set<std::string> IllegalFunctions;
+    static const std::set<std::string> IllegalFunctions;
 
 public:
-  virtual void MacroExpands(const Token &MacroNameTok, const MacroDefinition &,
-                            SourceRange Range, const MacroArgs *) override {
-    const std::string &macroName = MacroNameTok.getIdentifierInfo()->getName();
-    if (IllegalFunctions.count(macroName)) {
-      RuleChecker.diag(Range.getBegin());
+    virtual void MacroExpands(const Token &MacroNameTok, const MacroDefinition &,
+                              SourceRange Range, const MacroArgs *) override {
+        const std::string &macroName = MacroNameTok.getIdentifierInfo()->getName();
+        if (IllegalFunctions.count(macroName)) {
+            RuleChecker.diag(Range.getBegin());
+        }
     }
-  }
 
 private:
-  Rule_17_0_5 &RuleChecker;
+    Rule_17_0_5 &RuleChecker;
 };
 
 const std::set<std::string> CheckerImpl::IllegalFunctions = {"setjmp"};
@@ -52,20 +52,20 @@ Rule_17_0_5::Rule_17_0_5(llvm::StringRef Name, ClangTidyContext *Context)
     : ClangTidyMisraCheck(Name, Context) {}
 
 void Rule_17_0_5::registerMatchers(ast_matchers::MatchFinder *Finder) {
-  auto matcher =
-      callExpr(callee(functionDecl(hasName("longjmp")))).bind("CallExpr");
-  Finder->addMatcher(matcher, this);
+    auto matcher =
+        callExpr(callee(functionDecl(hasName("longjmp")))).bind("CallExpr");
+    Finder->addMatcher(matcher, this);
 }
 
 void Rule_17_0_5::registerPPCallbacksImpl() {
-  getPreprocessor().addPPCallbacks(::llvm::make_unique<CheckerImpl>(*this));
+    getPreprocessor().addPPCallbacks(::llvm::make_unique<CheckerImpl>(*this));
 }
 
 void Rule_17_0_5::checkImpl(
     const ast_matchers::MatchFinder::MatchResult &Result) {
-  if (const auto *calExpr = Result.Nodes.getNodeAs<CallExpr>("CallExpr")) {
-    diag(calExpr->getLocStart());
-  }
+    if (const auto *calExpr = Result.Nodes.getNodeAs<CallExpr>("CallExpr")) {
+        diag(calExpr->getLocStart());
+    }
 }
 
 } // namespace cpp2008

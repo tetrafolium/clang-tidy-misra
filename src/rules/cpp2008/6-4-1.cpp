@@ -23,24 +23,24 @@ Rule_6_4_1::Rule_6_4_1(llvm::StringRef Name, ClangTidyContext *Context)
     : ClangTidyMisraCheck(Name, Context) {}
 
 void Rule_6_4_1::registerMatchers(ast_matchers::MatchFinder *Finder) {
-  Finder->addMatcher(ifStmt().bind("if"), this);
+    Finder->addMatcher(ifStmt().bind("if"), this);
 }
 
 void Rule_6_4_1::checkImpl(
     const ast_matchers::MatchFinder::MatchResult &Result) {
-  if (const auto *ifStmt = Result.Nodes.getNodeAs<IfStmt>("if")) {
-    const Stmt *thenStmt = ifStmt->getThen();
-    const Stmt *elseStmt = ifStmt->getElse();
-    // Check if then has a body
-    if (thenStmt && isa<CompoundStmt>(thenStmt) == false) {
-      diag(thenStmt->getLocStart());
+    if (const auto *ifStmt = Result.Nodes.getNodeAs<IfStmt>("if")) {
+        const Stmt *thenStmt = ifStmt->getThen();
+        const Stmt *elseStmt = ifStmt->getElse();
+        // Check if then has a body
+        if (thenStmt && isa<CompoundStmt>(thenStmt) == false) {
+            diag(thenStmt->getLocStart());
+        }
+        // Check if else has a body or another if statement
+        if (elseStmt &&
+                ((isa<CompoundStmt>(elseStmt) || isa<IfStmt>(elseStmt)) == false)) {
+            diag(elseStmt->getLocStart());
+        }
     }
-    // Check if else has a body or another if statement
-    if (elseStmt &&
-        ((isa<CompoundStmt>(elseStmt) || isa<IfStmt>(elseStmt)) == false)) {
-      diag(elseStmt->getLocStart());
-    }
-  }
 }
 
 } // namespace cpp2008

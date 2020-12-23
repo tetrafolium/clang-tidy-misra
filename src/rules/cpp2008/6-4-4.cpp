@@ -23,49 +23,49 @@ Rule_6_4_4::Rule_6_4_4(llvm::StringRef Name, ClangTidyContext *Context)
     : ClangTidyMisraCheck(Name, Context) {}
 
 void Rule_6_4_4::registerMatchers(ast_matchers::MatchFinder *Finder) {
-  Finder->addMatcher(caseStmt().bind("case"), this);
+    Finder->addMatcher(caseStmt().bind("case"), this);
 }
 
 void Rule_6_4_4::checkImpl(
     const ast_matchers::MatchFinder::MatchResult &Result) {
-  if (const CaseStmt* caseStmt = Result.Nodes.getNodeAs<CaseStmt>("case")) {
-    const auto& parents = getASTContext().getParents(*caseStmt);
-    if (parents.empty()) {
-      diag(caseStmt->getLocStart());
-      return;
-    }
-
-    for (size_t i = 0; i < parents.size(); i++) {
-      if (const auto *child = parents[i].get<Stmt>()) {
-        // A case may have a case for parent
-        // if a case is following another case.
-        if (CaseStmt::classof(child)) {
-          return;
-        }
-        // A case must have a CompoundStmt for parent.
-        if (CompoundStmt::classof(child)) {
-          const auto& parents2 = getASTContext().getParents(*child);
-
-          if (parents2.empty()) {
+    if (const CaseStmt* caseStmt = Result.Nodes.getNodeAs<CaseStmt>("case")) {
+        const auto& parents = getASTContext().getParents(*caseStmt);
+        if (parents.empty()) {
             diag(caseStmt->getLocStart());
             return;
-          }
-
-          for (size_t j = 0; j < parents2.size(); j++) {
-            if (const auto *child2 = parents2[i].get<Stmt>()) {
-            // Then the CompoundStmt must have a SwitchStmt for parent.
-              if (SwitchStmt::classof(child2)) {
-                return;
-              }
-            }
-          }
         }
-      }
-    }
 
-    // All other situation is wrong.
-    diag(caseStmt->getLocStart());
-  }
+        for (size_t i = 0; i < parents.size(); i++) {
+            if (const auto *child = parents[i].get<Stmt>()) {
+                // A case may have a case for parent
+                // if a case is following another case.
+                if (CaseStmt::classof(child)) {
+                    return;
+                }
+                // A case must have a CompoundStmt for parent.
+                if (CompoundStmt::classof(child)) {
+                    const auto& parents2 = getASTContext().getParents(*child);
+
+                    if (parents2.empty()) {
+                        diag(caseStmt->getLocStart());
+                        return;
+                    }
+
+                    for (size_t j = 0; j < parents2.size(); j++) {
+                        if (const auto *child2 = parents2[i].get<Stmt>()) {
+                            // Then the CompoundStmt must have a SwitchStmt for parent.
+                            if (SwitchStmt::classof(child2)) {
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // All other situation is wrong.
+        diag(caseStmt->getLocStart());
+    }
 }
 
 } // namespace cpp2008

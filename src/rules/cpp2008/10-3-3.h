@@ -17,10 +17,10 @@ namespace cpp2008 {
 
 class Rule_10_3_3 : public ClangTidyMisraCheck {
 public:
-  Rule_10_3_3(StringRef Name, ClangTidyContext *Context);
-  virtual void registerMatchers(ast_matchers::MatchFinder *Finder) override;
-  virtual void
-  checkImpl(const ast_matchers::MatchFinder::MatchResult &Result) override;
+    Rule_10_3_3(StringRef Name, ClangTidyContext *Context);
+    virtual void registerMatchers(ast_matchers::MatchFinder *Finder) override;
+    virtual void
+    checkImpl(const ast_matchers::MatchFinder::MatchResult &Result) override;
 };
 
 } // cpp2008

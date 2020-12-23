@@ -17,8 +17,8 @@ namespace cpp2008 {
 
 class Rule_19_3_1 : public ClangTidyMisraCheck {
 public:
-  Rule_19_3_1(StringRef Name, ClangTidyContext *Context);
-  void registerPPCallbacksImpl() override;
+    Rule_19_3_1(StringRef Name, ClangTidyContext *Context);
+    void registerPPCallbacksImpl() override;
 };
 
 } // cpp2008

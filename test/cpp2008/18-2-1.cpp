@@ -3,7 +3,7 @@
 #include <cstddef>
 
 struct A {
-  int one;
+    int one;
 };
 
 int i = offsetof(A, one); // CHECK-MESSAGES: :[[@LINE]]:9: warning: The macro offsetof shall not be used. [misra-cpp2008-18-2-1]

@@ -19,9 +19,9 @@ Rule_19_3_1::Rule_19_3_1(llvm::StringRef Name, ClangTidyContext *Context)
     : ClangTidyMisraCheck(Name, Context) {}
 
 void Rule_19_3_1::registerPPCallbacksImpl() {
-  using BannedMacroPPCallback = common::BannedMacro<Rule_19_3_1>;
-  getPreprocessor().addPPCallbacks(::llvm::make_unique<BannedMacroPPCallback>(
-      *this, BannedMacroPPCallback::StringSet{"errno"}));
+    using BannedMacroPPCallback = common::BannedMacro<Rule_19_3_1>;
+    getPreprocessor().addPPCallbacks(::llvm::make_unique<BannedMacroPPCallback>(
+                                         *this, BannedMacroPPCallback::StringSet{"errno"}));
 }
 
 } // namespace cpp2008

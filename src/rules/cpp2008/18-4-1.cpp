@@ -22,18 +22,18 @@ Rule_18_4_1::Rule_18_4_1(llvm::StringRef Name, ClangTidyContext *Context)
     : ClangTidyMisraCheck(Name, Context) {}
 
 void Rule_18_4_1::registerMatchers(ast_matchers::MatchFinder *Finder) {
-  Finder->addMatcher(cxxNewExpr().bind("new"), this);
+    Finder->addMatcher(cxxNewExpr().bind("new"), this);
 }
 
 void Rule_18_4_1::checkImpl(
     const ast_matchers::MatchFinder::MatchResult &Result) {
-  if (const auto *newExpr = Result.Nodes.getNodeAs<CXXNewExpr>("new")) {
-    // Print error on all new usages except for placement new
-    if (newExpr->getNumPlacementArgs() == 0 ||
-        newExpr->shouldNullCheckAllocation(getASTContext())) {
-      diag(newExpr->getLocStart());
+    if (const auto *newExpr = Result.Nodes.getNodeAs<CXXNewExpr>("new")) {
+        // Print error on all new usages except for placement new
+        if (newExpr->getNumPlacementArgs() == 0 ||
+                newExpr->shouldNullCheckAllocation(getASTContext())) {
+            diag(newExpr->getLocStart());
+        }
     }
-  }
 }
 
 } // namespace cpp2008

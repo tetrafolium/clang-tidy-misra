@@ -23,16 +23,16 @@ Rule_9_5_1::Rule_9_5_1(llvm::StringRef Name, ClangTidyContext *Context)
     : ClangTidyMisraCheck(Name, Context) {}
 
 void Rule_9_5_1::registerMatchers(ast_matchers::MatchFinder *Finder) {
-  Finder->addMatcher(recordDecl().bind("RecordDecl"), this);
+    Finder->addMatcher(recordDecl().bind("RecordDecl"), this);
 }
 
 void Rule_9_5_1::checkImpl(
     const ast_matchers::MatchFinder::MatchResult &Result) {
-  if (const auto *RD = Result.Nodes.getNodeAs<CXXRecordDecl>("RecordDecl")) {
-    if (RD->getTagKind() == TTK_Union) {
-      diag(RD->getLocation());
+    if (const auto *RD = Result.Nodes.getNodeAs<CXXRecordDecl>("RecordDecl")) {
+        if (RD->getTagKind() == TTK_Union) {
+            diag(RD->getLocation());
+        }
     }
-  }
 }
 
 } // namespace cpp2008
