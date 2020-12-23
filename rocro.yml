@@ -19,12 +19,13 @@ inspecode:
       thresholds: {num-issues: 999}
 
     cppcheck:
-    - machine: {cpu:1.0}
-      thresholds: {num-issues: 999}
-    - machine: {cpu:1.1}
       thresholds: {num-issues: 999}
 
     cpplint:
+      options:
+        --filter:
+          - -whitespace/comments
+          - -legal/copyright
       thresholds: {num-issues: 999}
 
     # fortify:
@@ -36,8 +37,11 @@ inspecode:
     grep:
       thresholds: {num-issues: 999}
 
-    infer:
-      thresholds: {num-issues: 999}
+    ### $ infer compile --jobs 1 -- cmake .
+    ### CMake Error at CMakeLists.txt:4 (add_clang_library):
+    ###   Unknown CMake command "add_clang_library".
+    # infer:
+    #   thresholds: {num-issues: 999}
 
     jscpd:
       thresholds: {num-issues: 999}
@@ -46,8 +50,11 @@ inspecode:
       auto-fix: true
       thresholds: {num-issues: 999}
 
-    scan-build:
-      thresholds: {num-issues: 999}
+    ### $ scan-build -o "${OUTPUT}" cmake .
+    ### CMake Error at CMakeLists.txt:4 (add_clang_library):
+    ###   Unknown CMake command "add_clang_library".
+    # scan-build:
+    #   thresholds: {num-issues: 999}
 
     uncrustify:
       auto-fix: true
