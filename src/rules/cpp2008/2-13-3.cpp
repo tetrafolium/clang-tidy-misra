@@ -33,7 +33,7 @@ void Rule_2_13_3::checkImpl(
 
 		const IntegerLiteral *intLiteral =
 			dyn_cast<IntegerLiteral>(castExpr->getSubExpr());
-		// Bail out if this node is not an integer literal beeing casted
+		// Bail out if this node is not an integer literal being casted
 		if (!intLiteral) {
 			return;
 		}
